@@ -104,6 +104,28 @@ services:
       namespace: monitoring
     logging: *default-logging
 
+  cortex:
+    image: cortexproject/cortex:v1.8.0
+    command:
+      - -config.file=/etc/cortex.yaml
+      - -target=all
+      - -server.http-listen-port=8001
+      - -server.grpc-listen-port=9001
+    volumes:
+      - ./cortex.yaml:/etc/cortex.yaml
+    logging: *default-logging
+
+  minio:
+    image: minio/minio
+    command: [ "server", "/data" ]
+    environment:
+      - MINIO_ACCESS_KEY=cortex
+      - MINIO_SECRET_KEY=supersecret
+    ports:
+      - 9000:9000
+    volumes:
+      - .data-minio:/data:delegated    
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.38.7
     container_name: cadvisor

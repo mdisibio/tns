@@ -13,6 +13,19 @@ datasources:
       exemplarTraceIdDestinations:
       - name: traceID
         datasourceUid: tempo
+  - name: Cortex
+    type: prometheus
+    url: http://cortex:8001/prometheus
+    access: proxy
+    editable: false
+    isDefault: false
+    jsonData:
+        httpMethod: GET
+    version: 1
+    jsonData:
+      exemplarTraceIdDestinations:
+      - name: traceID
+        datasourceUid: tempo
   - name: Loki
     type: loki
     uid: loki
